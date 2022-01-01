@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Building Glfw And Glm Project On Ubuntu | Fanjin’s Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Building Glfw And Glm Project On Ubuntu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="layout: post title: “Building GLFW and GLM Project on Ubuntu” date: 2018-11-16 00:00:00 -0800 categories: GLFW, GLM —" />
+<meta property="og:description" content="layout: post title: “Building GLFW and GLM Project on Ubuntu” date: 2018-11-16 00:00:00 -0800 categories: GLFW, GLM —" />
+<link rel="canonical" href="http://localhost:4000/2018/11/16/Building-GLFW-and-GLM-Project-on-Ubuntu.html" />
+<meta property="og:url" content="http://localhost:4000/2018/11/16/Building-GLFW-and-GLM-Project-on-Ubuntu.html" />
+<meta property="og:site_name" content="Fanjin’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-11-16T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Building Glfw And Glm Project On Ubuntu" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/11/16/Building-GLFW-and-GLM-Project-on-Ubuntu.html"},"url":"http://localhost:4000/2018/11/16/Building-GLFW-and-GLM-Project-on-Ubuntu.html","@type":"BlogPosting","description":"layout: post title: “Building GLFW and GLM Project on Ubuntu” date: 2018-11-16 00:00:00 -0800 categories: GLFW, GLM —","headline":"Building Glfw And Glm Project On Ubuntu","dateModified":"2018-11-16T00:00:00-05:00","datePublished":"2018-11-16T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=c3e2896bc815f4c1a998261122a1852d8fd5674c">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Building Glfw And Glm Project On Ubuntu</h1>
+      <h2 class="project-tagline">Welcome to my personal blog. See full [disclaimer](fanjin.org/disclaimer)</h2>
+      
+        <a href="https://github.com/Fnjn/fnjn.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>layout: post
+title:  “Building GLFW and GLM Project on Ubuntu”
+date:   2018-11-16 00:00:00 -0800
+categories: GLFW, GLM
+—</p>
+
+<p><em>This guide is tested Ubuntu on 16.04.5</em></p>
+
+<p>Install necessary packages</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update
+sudo apt-get install build-essential cmake git
+sudo apt-get install libglm-dev libglfw3-dev libglew-dev
+</code></pre></div></div>
+
+<p>Clone starter code from course website.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:Fnjn/CSE167StarterCode.git
+</code></pre></div></div>
+
+<h1 id="makefile">Makefile</h1>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd CSE167StarterCode
+make
+./mytest
+</code></pre></div></div>
+
+<p><img src="/images/Building-GLFW-and-GLM-Project-on-Ubuntu/success_run2.png" alt="Success Run" /></p>
+
+<h1 id="eclipse-ide">Eclipse IDE</h1>
+
+<p>Download and install Eclipse CDT from https://www.eclipse.org/cdt/downloads.php<br /><br /></p>
+
+<p>Create an empty C++ project and copy-paste all files from Starter code.
+<img src="/images/Building-GLFW-and-GLM-Project-on-Ubuntu/project_files.png" alt="Project Files" /></p>
+
+<p>Right click project » Properties » C/C++ General » Paths and Symbols » libraries, then add following library links as showed in picture.
+<img src="/images/Building-GLFW-and-GLM-Project-on-Ubuntu/library_links.png" alt="Link Libraries" /></p>
+
+<p>Build » Run
+<img src="/images/Building-GLFW-and-GLM-Project-on-Ubuntu/success_run.png" alt="Success Run" /></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/Fnjn/fnjn.github.io">fnjn.github.io</a> is maintained by <a href="https://github.com/Fnjn">Fnjn</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

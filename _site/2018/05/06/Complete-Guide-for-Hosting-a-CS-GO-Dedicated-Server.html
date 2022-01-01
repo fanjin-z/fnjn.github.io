@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Complete Guide For Hosting A Cs:go Dedicated Server | Fanjin’s Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Complete Guide For Hosting A Cs:go Dedicated Server" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="layout: post title: “Complete Guide for Hosting a CS:GO Dedicated Server” date: 2018-05-06 00:00:00 -0800 categories: csgo-server, docker —" />
+<meta property="og:description" content="layout: post title: “Complete Guide for Hosting a CS:GO Dedicated Server” date: 2018-05-06 00:00:00 -0800 categories: csgo-server, docker —" />
+<link rel="canonical" href="http://localhost:4000/2018/05/06/Complete-Guide-for-Hosting-a-CS-GO-Dedicated-Server.html" />
+<meta property="og:url" content="http://localhost:4000/2018/05/06/Complete-Guide-for-Hosting-a-CS-GO-Dedicated-Server.html" />
+<meta property="og:site_name" content="Fanjin’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-05-06T00:00:00-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Complete Guide For Hosting A Cs:go Dedicated Server" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/05/06/Complete-Guide-for-Hosting-a-CS-GO-Dedicated-Server.html"},"url":"http://localhost:4000/2018/05/06/Complete-Guide-for-Hosting-a-CS-GO-Dedicated-Server.html","@type":"BlogPosting","description":"layout: post title: “Complete Guide for Hosting a CS:GO Dedicated Server” date: 2018-05-06 00:00:00 -0800 categories: csgo-server, docker —","headline":"Complete Guide For Hosting A Cs:go Dedicated Server","dateModified":"2018-05-06T00:00:00-04:00","datePublished":"2018-05-06T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=c3e2896bc815f4c1a998261122a1852d8fd5674c">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Complete Guide For Hosting A Cs:go Dedicated Server</h1>
+      <h2 class="project-tagline">Welcome to my personal blog. See full [disclaimer](fanjin.org/disclaimer)</h2>
+      
+        <a href="https://github.com/Fnjn/fnjn.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>layout: post
+title:  “Complete Guide for Hosting a CS:GO Dedicated Server”
+date:   2018-05-06 00:00:00 -0800
+categories: csgo-server, docker
+—</p>
+
+<p>This guide is tested on Debian Stretch (naive installation) and Jessie (LinuxGSM installation).</p>
+
+<p><em>To keep your server safe, it’s always recommended to enable both key based and password login authentication.</em>
+(Guide: <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604">Setup SSH Authentication</a>
+, <a href="https://security.stackexchange.com/questions/17931/possible-to-use-both-private-key-and-password-authentication-for-ssh-login">Enable both authentication</a>)<br /></p>
+
+<h2 id="install-csgo-dedicated-server">Install CS:GO Dedicated Server</h2>
+
+<h3 id="naive-installation-not-recommended">Naive Installation (Not Recommended)</h3>
+
+<p>Create an user account name <code class="language-plaintext highlighter-rouge">steam</code> (or whatever name you like). You will be prompted to create a password.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adduser steam
+</code></pre></div></div>
+
+<p>Give your created account <code class="language-plaintext highlighter-rouge">sudo</code> privilege.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adduser steam sudo
+</code></pre></div></div>
+
+<p>Switch to your account.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su - steam
+</code></pre></div></div>
+
+<p>Go to your home directory.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /home/steam
+</code></pre></div></div>
+
+<p>Create a directory for SteamCMD and switch to it.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir ~/Steam &amp;&amp; cd ~/Steam
+</code></pre></div></div>
+
+<p>Install dependency library.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install lib32gcc1 &amp;&amp; sudo apt-get install lib32stdc++6
+</code></pre></div></div>
+
+<p>Download and extract SteamCMD.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -
+</code></pre></div></div>
+
+<p>Run SteamCMD and updates will automatically be download. If success, <code class="language-plaintext highlighter-rouge">Steam&gt;</code> prompts.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/Steam/steamcmd.sh
+</code></pre></div></div>
+
+<p>Login your steam account. Your will be required to enter your steam password (, and Two-factor code if Steam Guard is enabled).</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>login [Steam Username]
+</code></pre></div></div>
+
+<p>Designate install path for csgo server.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>force_install_dir /path/to/csgo-ds/
+</code></pre></div></div>
+
+<p>Login as anonymous.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>login anonymous
+</code></pre></div></div>
+
+<p>Install csgo dedicated server. This step takes quite a while, approx. 17 GB space will be used.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app_update 740 validate
+</code></pre></div></div>
+
+<p>When installation completes, quit SteamCmd.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>quit
+</code></pre></div></div>
+
+<p>Start a casual game on dust 2 (see note). More script info <a href="https://developer.valvesoftware.com/wiki/Source_Dedicated_Server">Source Dedicated Server</a>.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/path/to/csgo-ds/srcds_run -game csgo -console -usercon +game_type 0 +game_mode 0 +mapgroup mg_active +map de_dust2 +sv_setsteamaccount [token]
+</code></pre></div></div>
+
+<p>Open CS:GO game and connect to your server. On CS:GO game console.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>connect IP[:PORT]
+</code></pre></div></div>
+<p>or Search your server on community server pages <code class="language-plaintext highlighter-rouge">PLAY &gt; BROWSE COMMUNITY SERVERS</code>. HF.</p>
+
+<p>Note: To host public servers, you need <code class="language-plaintext highlighter-rouge">Steam Game Server Login Token (GSLT)</code>. Register on <a href="https://steamcommunity.com/dev/managegameservers">Steam Game Server Account Management</a>.</p>
+
+<h3 id="installation-with-linuxgsm-highly-recommended">Installation with LinuxGSM (Highly Recommended)</h3>
+<p><em>Complete LinuxGSM <a href="https://linuxgsm.com/lgsm/csgoserver/">official guide</a></em></p>
+
+<p>Create an user account name <code class="language-plaintext highlighter-rouge">csgoserver</code> (or whatever name you like). You will be prompted to create a password.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adduser csgoserver
+</code></pre></div></div>
+
+<p>Give your created account <code class="language-plaintext highlighter-rouge">sudo</code> privilege.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adduser csgoserver sudo
+</code></pre></div></div>
+
+<p>Switch to your account.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su - csgoserver
+</code></pre></div></div>
+
+<p>Go to your home directory.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /home/csgoserver
+</code></pre></div></div>
+
+<p>Register Steam Game Server Login Token (GSLT) on <a href="https://steamcommunity.com/dev/managegameservers">Steam Game Server Account Management</a>.<br /><br /></p>
+
+<p>Install dependencies (Debian 64 bits). (Note: dependencies are slightly vary for different OS, please check <a href="https://linuxgsm.com/lgsm/csgoserver/#ubuntu">here</a> )</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo dpkg --add-architecture i386; sudo apt update; sudo apt install mailutils postfix curl wget file bzip2 gzip unzip bsdmainutils python util-linux ca-certificates binutils bc tmux lib32gcc1 libstdc++6 libstdc++6:i386
+</code></pre></div></div>
+
+<p>Download and run the script.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://linuxgsm.com/dl/linuxgsm.sh &amp;&amp; chmod +x linuxgsm.sh &amp;&amp; bash linuxgsm.sh csgoserver
+</code></pre></div></div>
+
+<p>Run the installer and follow the instructions.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./csgoserver install
+</code></pre></div></div>
+
+<p>Start the server.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./csgoserver start
+</code></pre></div></div>
+
+<p>Open CS:GO game and connect to your server. On CS:GO game console.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>connect IP[:PORT]
+</code></pre></div></div>
+<p>or Search your server on community server pages <code class="language-plaintext highlighter-rouge">PLAY &gt; BROWSE COMMUNITY SERVERS</code>. HF.</p>
+
+<h2 id="more-on-server-management">More on server management</h2>
+<h3 id="setup-admin">Setup admin</h3>
+<p>Download <a href="https://www.sourcemod.net/downloads.php?branch=stable">Source Mod</a>
+Download <a href="https://www.sourcemm.net/downloads.php?branch=stable">Metamode: Source</a>
+Download <a href="https://www.sourcemm.net/vdf">Metamode vdf</a>. (Note: select game <code class="language-plaintext highlighter-rouge">Counter-Strike: Global Offensive</code>)</p>
+
+<p>Untar (or unzip) <code class="language-plaintext highlighter-rouge">sourcemod</code> and <code class="language-plaintext highlighter-rouge">sourcemm</code> to same folder.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar -xzvf sourcemod-xxx.tar.gz -C /target/directory
+tar -xzvf mmsource-xxx.tar.gz  -C /target/directory
+</code></pre></div></div>
+<p>Replace with newly downloaded <code class="language-plaintext highlighter-rouge">metamod.vdf</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp /download/directory/metamod.vdf /target/directory/addons
+</code></pre></div></div>
+
+<p>Add yourself to admin. Append your SteamID and privilege to <code class="language-plaintext highlighter-rouge">/target/directory/addons/sourcemod/configs/admins_simple.ini</code> in following format.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"STEAM_0:1:16"		"z"
+</code></pre></div></div>
+<p>Your can find your steamID By <a href="https://steamidfinder.com/">Steam ID Finder</a>. “z” represents root privilege. More privilege info in <code class="language-plaintext highlighter-rouge">admin_levels.cfg</code> of the same folder.</p>
+
+<p>Upload everything under <code class="language-plaintext highlighter-rouge">/target/directory</code> to server <code class="language-plaintext highlighter-rouge">csgo</code> directory. (If install with LinuxGSM, the path is <code class="language-plaintext highlighter-rouge">~/serverfiles/csgo</code>)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp -r /target/directory csgoserver@[Server IP]:~/serverfiles/csgo
+</code></pre></div></div>
+
+<p>Start the server and connect to the server in-game.
+Toggle admin by enter <code class="language-plaintext highlighter-rouge">!admin</code> on game chat or enter <code class="language-plaintext highlighter-rouge">say "!admin"</code> on console.</p>
+
+<h3 id="further-reading">Further Reading</h3>
+<p>CS:GO Dedicated Server Guide – How To Setup and Install [<a href="https://segmentnext.com/2012/08/23/csgo-dedicated-server-guide-how-to-setup-and-install/">link</a>]. This article provides excellent explanation on major configuration files (e.g. gamemodes_server.txt, server.cfg). <br />
+Linux GSM: Developing LGSM [<a href="https://github.com/GameServerManagers/LinuxGSM/wiki/Developing-LGSM">link</a>]. This article explains how LinuxGSM works.<br />
+Linux GSM: Workshop(https://github.com/GameServerManagers/LinuxGSM/wiki/Workshop)].<br />
+Deathmatch Goes Advanced [<a href="https://forums.alliedmods.net/showthread.php?t=233685">link</a>]. An excellent plugin for Deathmatch server.<br /></p>
+
+<p>Reference:
+Valve developer wiki: <a href="https://developer.valvesoftware.com/wiki/SteamCMD">SteamCMD</a>.<br />
+Valve developer wiki: <a href="https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers">Counter-Strike: Global Offensive Dedicated Servers</a>.<br />
+Linux GSM: <a href="https://linuxgsm.com/lgsm/csgoserver/#gettingstarted">Getting Started with csgoserver</a>.<br />
+Linux GSM: <a href="https://github.com/GameServerManagers/LinuxGSM/wiki/Multiple-Game-Servers">Multiple Game Servers</a>.<br />
+How to set up Admin (sourcemod) on a CS:GO Dedicated Server [<a href="https://www.youtube.com/watch?v=rpQwOMpuUQ4">YouTube link</a>].<br /><br /></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/Fnjn/fnjn.github.io">fnjn.github.io</a> is maintained by <a href="https://github.com/Fnjn">Fnjn</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

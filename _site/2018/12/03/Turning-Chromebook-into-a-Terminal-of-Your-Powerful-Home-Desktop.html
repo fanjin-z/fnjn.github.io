@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Turning Chromebook Into A Terminal Of Your Powerful Home Desktop | Fanjin’s Blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Turning Chromebook Into A Terminal Of Your Powerful Home Desktop" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="layout: post title: “Turning Chromebook into a Terminal of Your Powerful Home Desktop” date: 2018-12-03 00:00:00 -0800 categories: Chromebook, X11, Linxu —" />
+<meta property="og:description" content="layout: post title: “Turning Chromebook into a Terminal of Your Powerful Home Desktop” date: 2018-12-03 00:00:00 -0800 categories: Chromebook, X11, Linxu —" />
+<link rel="canonical" href="http://localhost:4000/2018/12/03/Turning-Chromebook-into-a-Terminal-of-Your-Powerful-Home-Desktop.html" />
+<meta property="og:url" content="http://localhost:4000/2018/12/03/Turning-Chromebook-into-a-Terminal-of-Your-Powerful-Home-Desktop.html" />
+<meta property="og:site_name" content="Fanjin’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-03T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Turning Chromebook Into A Terminal Of Your Powerful Home Desktop" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/12/03/Turning-Chromebook-into-a-Terminal-of-Your-Powerful-Home-Desktop.html"},"url":"http://localhost:4000/2018/12/03/Turning-Chromebook-into-a-Terminal-of-Your-Powerful-Home-Desktop.html","@type":"BlogPosting","description":"layout: post title: “Turning Chromebook into a Terminal of Your Powerful Home Desktop” date: 2018-12-03 00:00:00 -0800 categories: Chromebook, X11, Linxu —","headline":"Turning Chromebook Into A Terminal Of Your Powerful Home Desktop","dateModified":"2018-12-03T00:00:00-05:00","datePublished":"2018-12-03T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=c3e2896bc815f4c1a998261122a1852d8fd5674c">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Turning Chromebook Into A Terminal Of Your Powerful Home Desktop</h1>
+      <h2 class="project-tagline">Welcome to my personal blog. See full [disclaimer](fanjin.org/disclaimer)</h2>
+      
+        <a href="https://github.com/Fnjn/fnjn.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>layout: post
+title:  “Turning Chromebook into a Terminal of Your Powerful Home Desktop”
+date:   2018-12-03 00:00:00 -0800
+categories: Chromebook, X11, Linxu
+—</p>
+
+<p>This tutorials will show how to turn a Chromebook (or any Debian based computer) into a terminal of any other Linux computer. These two computers can be in different networks, as long as both have Internet connection. This is super helpful if you have one cheap but portable laptop and one powerful home desktop.</p>
+
+<h2 id="requirement">Requirement:</h2>
+<ul>
+  <li>A domain name.</li>
+  <li>A server or VPS with public IP.</li>
+  <li>Chrome OS with linux beta enabled or in development mode. <a href="https://www.howtogeek.com/363331/how-to-set-up-and-use-linux-apps-on-chrome-os/">How to Set Up and Use Linux Apps on Chrome OS</a></li>
+</ul>
+
+<h2 id="tools">Tools</h2>
+<ul>
+  <li>Fast Reverse Proxy (FRP v0.21) <a href="https://github.com/fatedier/frp">GitHub</a></li>
+  <li>openssh-server</li>
+  <li>Atom (Optional)</li>
+  <li>Atom remote-ftp extension (Optional)</li>
+  <li>Jupyter Notebook (Optional)</li>
+  <li>GNU screen (Optional)</li>
+</ul>
+
+<h2 id="setup-environment">Setup Environment</h2>
+<ul>
+  <li>Desktop Ubuntu 16.04</li>
+  <li>Chromebook Version 70</li>
+  <li>Server Debian 9.6</li>
+</ul>
+
+<h3 id="configuration">Configuration</h3>
+<p>Dowload FRP (<a href="https://github.com/fatedier/frp/releases">release page</a>) to Desktop, Chromebook and Server.</p>
+<h4 id="server-configuration">Server Configuration</h4>
+<p>Edit <em>frp/frps.ini</em></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>common]
+bind_port <span class="o">=</span> 7000
+<span class="c"># Bonus Feature</span>
+vhost_http_port <span class="o">=</span> 8080
+</code></pre></div></div>
+
+<p>Start frps on Server</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>frp/frps <span class="nt">-c</span> frp/frps.ini
+</code></pre></div></div>
+
+<h3 id="desktop-configuration">Desktop Configuration</h3>
+<p>Edit <em>frp/frpc.ini</em></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>common]
+server_addr <span class="o">=</span> your_server_public_ip
+server_port <span class="o">=</span> 7000
+
+<span class="o">[</span>secret_ssh]
+<span class="nb">type</span> <span class="o">=</span> stcp
+sk <span class="o">=</span> your_password
+local_ip <span class="o">=</span> 127.0.0.1
+local_port <span class="o">=</span> 22
+
+<span class="o">[</span>secret_ftp]
+<span class="nb">type</span> <span class="o">=</span> stcp
+sk <span class="o">=</span> your_password
+local_ip <span class="o">=</span> 127.0.0.1
+local_port <span class="o">=</span> 21
+
+<span class="c"># Bonus Feature</span>
+<span class="o">[</span>jupyter_notebook]
+<span class="nb">type</span> <span class="o">=</span> http
+local_port <span class="o">=</span> 8888
+custom_domains <span class="o">=</span> www.your_domian.com
+</code></pre></div></div>
+
+<p>Start frpc on Desktop</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>frp/frpc <span class="nt">-c</span> frp/frpc.ini
+</code></pre></div></div>
+
+<p>Install Openssh Server</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>openssh-server
+</code></pre></div></div>
+<p>Make sure to enable <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server">key-based authentication</a> and check out <a href="https://askubuntu.com/questions/420652/how-to-setup-a-restricted-sftp-server-on-ubuntu">this askubuntu answer</a> for more security configuration details.</p>
+
+<h3 id="chromebook-configuration">Chromebook Configuration</h3>
+<p>Edit  <em>frp/frpc.ini</em></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>common]
+server_addr <span class="o">=</span> your_server_public_ip
+server_port <span class="o">=</span> 7000
+
+<span class="o">[</span>secret_ssh_visitor]
+<span class="nb">type</span> <span class="o">=</span> stcp
+role <span class="o">=</span> visitor
+server_name <span class="o">=</span> secret_ssh
+sk <span class="o">=</span> your_password
+bind_addr <span class="o">=</span> 127.0.0.1
+bind_port <span class="o">=</span> 6000
+
+<span class="o">[</span>secret_ftp_visitor]
+<span class="nb">type</span> <span class="o">=</span> stcp
+role <span class="o">=</span> visitor
+server_name <span class="o">=</span> secret_ftp
+sk <span class="o">=</span> your_password
+bind_addr <span class="o">=</span> 127.0.0.1
+bind_port <span class="o">=</span> 6001
+</code></pre></div></div>
+
+<p>Start frpc on Chromebook</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>frp/frpc <span class="nt">-c</span> frp/frpc.ini
+</code></pre></div></div>
+
+<p>ssh into Desktop</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-oPort</span><span class="o">=</span>6000  <span class="o">[</span>username]@127.0.0.1
+</code></pre></div></div>
+<p>sftp into Desktop</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sftp <span class="nt">-oPort</span><span class="o">=</span>6000  <span class="o">[</span>username]@127.0.0.1
+</code></pre></div></div>
+<p>Extra details on <a href="https://github.com/fatedier/frp/blob/master/README.md">frp/REAMDE</a></p>
+
+<h2 id="bonus-features">Bonus Features</h2>
+<p>I find these bonus features very useful for developers.</p>
+
+<h3 id="jupyter-notebook">Jupyter Notebook</h3>
+<p>Add to Server’s <em>frp/frps.ini</em></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vhost_http_port <span class="o">=</span> 8080
+</code></pre></div></div>
+<p>Add to Desktop’s <em>frp/frps.ini</em>
+frp/frpc.ini</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>jupyter_notebook]
+<span class="nb">type</span> <span class="o">=</span> http
+local_port <span class="o">=</span> 8888
+custom_domains <span class="o">=</span> www.your_domian.com
+</code></pre></div></div>
+
+<p>ssh into Desktop, start Jupyter Notebook and copy the one-time token. Enter Chromebook’s browser</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://www.your_domian.com:8080/?token=[your one time token]
+</code></pre></div></div>
+
+<h3 id="x11-display">X11 Display</h3>
+<p>Make sure x11 forwording is enabled in the machine you ssh into.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-oPort</span><span class="o">=</span>6000 <span class="nt">-X</span> <span class="o">[</span>username]@127.0.0.1
+xeyes
+</code></pre></div></div>
+<p>You will see a window with 2 eyes pop up.</p>
+
+<h3 id="atom-remote-editing">Atom Remote Editing</h3>
+<p>Install Atom on Chromebook</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>atom
+</code></pre></div></div>
+<p>Install <a href="https://atom.io/packages/remote-ftp">remote-ftp</a> package. This will allow remote editing and keeping files sync.</p>
+
+<h3 id="gnu-screen">GNU screen</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>screen
+</code></pre></div></div>
+<p>It creates virtual terminals on top of ssh shell and allow quick resuming sessions even if network is interrupted. <a href="http://aperiodic.net/screen/quick_reference">screen quick reference</a></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/Fnjn/fnjn.github.io">fnjn.github.io</a> is maintained by <a href="https://github.com/Fnjn">Fnjn</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
