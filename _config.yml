@@ -21,11 +21,13 @@
 title: Fanjin's Blog
 description: >- # this means to ignore newlines until "baseurl:"
   Welcome to my personal blog.
-  See full [disclaimer](fanjin.org/disclaimer)
+  See [disclaimer](fanjin.org/disclaimer)
 domain: fanjin.org  # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://fanjin.org" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  fnjn
+instagram_username: fanjin.z
+linkedin_username: fanjin-zeng
 
 # Build settings
 theme: minima

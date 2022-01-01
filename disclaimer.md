@@ -1,3 +1,9 @@
+---
+layout: page
+title: Disclaimer
+permalink: /disclaimer/
+---
+
 <h1>Disclaimer</h1>
 <p>Last updated: January 01, 2022</p>
 <h1>Interpretation and Definitions</h1>
