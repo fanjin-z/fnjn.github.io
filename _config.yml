@@ -30,7 +30,7 @@ url: "https://fanjin.org" # the base hostname & protocol for your site, e.g. htt
 github_username:  fnjn
 
 # Build settings
-theme: minima
+theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
 
